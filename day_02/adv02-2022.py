@@ -35,11 +35,10 @@ game_scores_2 = {
 
 
 def main(rounds, game_scores, part):
-    points = 0
-    rounds = [round for round in open('adv2-2022.txt', 'r').read().split('\n')]
     points = sum([game_scores.get(round, 0) for round in rounds])
     print(f'Points for part {part}: {points}')
 
 if __name__ == '__main__':
-    rounds = [round for round in open('adv2-2022.txt', 'r').read().split('\n')]
+    rounds = [round for round in open('adv02-2022.txt', 'r').read().split('\n')]
+    main(rounds, game_scores_1, 1)
     main(rounds, game_scores_2, 2)

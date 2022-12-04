@@ -1,7 +1,7 @@
 
 def main():
     l = []
-    data = open('adv1-2022.txt', 'r')
+    data = open('adv01-2022.txt', 'r')
     elfs = data.read().split('\n\n')
     for meals in elfs:
         sum_l = sum([int(num) for num in meals.split('\n')])
