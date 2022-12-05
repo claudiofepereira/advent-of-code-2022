@@ -6,7 +6,6 @@ def read_file():
 def part1(c=''):
     data = read_file()
     arr = []
-    c = ''
     stacks, moves = data[0], data[1]
     # Processing the number of stacks to consider into a dictionary.
     dict_stacks = {key: [] for key in stacks.split(
@@ -49,7 +48,6 @@ def part1(c=''):
 def part2(c=''):
     data = read_file()
     arr = []
-    c = ''
     stacks, moves = data[0], data[1]
     # Processing the number of stacks to consider into a dictionary.
     dict_stacks = {key: [] for key in stacks.split(
