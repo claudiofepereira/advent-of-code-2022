@@ -28,10 +28,32 @@ for row in data:
 # Loop through all the directories and discard the ones above 100000 in size.
 # Then sum the values of the remainding directories.
 MAX_SIZE = 100000
-print(sum(filter(lambda size: size <= MAX_SIZE, map(lambda file: folders[file], folders))))
+print(
+    sum(
+        filter(
+            lambda size: size <= MAX_SIZE, 
+            map(
+                lambda file: folders[file], 
+                folders
+            )
+        )
+    )
+)
 
 # part 2
 # Get the remainding size needed to be freed up in order to update the system.
 # subtract the root folder size and add the free space needed.
 space_to_free = folders["/"] - 70000000 + 30000000
-print(min(list(filter(lambda size: size > space_to_free, map(lambda path: folders[path], folders)))))
+print(
+    min(
+        list(
+            filter(
+                lambda size: size > space_to_free, 
+                map(
+                    lambda path: folders[path], 
+                    folders
+                )
+            )
+        )
+    )
+)
