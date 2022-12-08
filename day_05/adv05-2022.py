@@ -1,99 +1,31 @@
+import re
 
-def read_file():
-    return open('adv05-2022.txt', 'r').read().split('\n\n')
+stacks = []
 
+find_numbers = "([0-9]+)"
 
-def part1(c=''):
-    data = read_file()
-    arr = []
-    stacks, moves = data[0], data[1]
-    n = len(stacks.split('\n'))-1
-    # Processing the number of stacks to consider into a dictionary.
-    dict_stacks = {key: [] for key in stacks.split(
-        '\n')[n:][0].split(' ') if key != ''}
-    print('Finished processing dict stacks')
-    # Processing the containers inside the stacks.
-    for i in stacks.split('\n')[:n]:
-        aux = []
-        cont = 0
-        for x in i.split(' '):
-            if cont == 4:
-                aux.append(None)
-                cont = 0
-            if x != '':
-                aux.append(x.replace('[', '').replace(']', ''))
-                cont = 1
-            else:
-                cont += 1
-        arr.append(aux)
-    print('Finished processing containers inside stacks')
-    # Stacks separated by column number.
-    for key in dict_stacks.keys():
-        dict_stacks[key].append([i[int(key)-1]
-                                for i in arr if i[int(key)-1] != None])
-        dict_stacks[key][0].reverse()
-    print('Reversed containers and created ordered stacks.')
-    # Movement time.
-    for move in moves.split('\n'):
-        n = [int(x) for x in move.split() if x.isdigit()]
-        # Move n[0] containers from n[1] to n[2]
-        # First add to the stack that is receiving containers in reverse order.
-        dict_stacks[str(n[2])][0] += dict_stacks[str(n[1])][0][:-n[0]-1:-1]
-        # Remove from the stack that got containers removed.
-        dict_stacks[str(n[1])][0] = dict_stacks[str(n[1])][0][slice(
-            0,
-            len(dict_stacks[str(n[1])][0])-n[0])]
-    print('Finished moving containers')
-    res = [dict_stacks[key][0][-1] for key in dict_stacks.keys()]
-    for letter in res:
-        c += letter
-    print(f'Part 1 value: {c}')
+data = open('adv05-2022.txt', 'r')
 
+# Get the stacks in a list of lists format.
+for line in data:
+    if line == '\n': break
+    stacks.append([line[k*4+1] for k in range(len(line) // 4)])
 
-def part2(c=''):
-    data = read_file()
-    arr = []
-    stacks, moves = data[0], data[1]
-    n = len(stacks.split('\n'))-1
-    # Processing the number of stacks to consider into a dictionary.
-    dict_stacks = {key: [] for key in stacks.split(
-        '\n')[n:][0].split(' ') if key != ''}
-    print('Finished processing dict stacks')
-    # Processing the containers inside the stacks.
-    for i in stacks.split('\n')[:n]:
-        aux = []
-        cont = 0
-        for x in i.split(' '):
-            if cont == 4:
-                aux.append(None)
-                cont = 0
-            if x != '':
-                aux.append(x.replace('[', '').replace(']', ''))
-                cont = 1
-            else:
-                cont += 1
-        arr.append(aux)
-    # Stacks separated by column number.
-    for key in dict_stacks.keys():
-        dict_stacks[key].append([i[int(key)-1]
-                                for i in arr if i[int(key)-1] != None])
-        dict_stacks[key][0].reverse()
-    # Movement time.
-    for move in moves.split('\n'):
-        n = [int(x) for x in move.split() if x.isdigit()]
-        # Move n[0] containers from n[1] to n[2]
-        # First add to the stack that is receiving containers.
-        dict_stacks[str(n[2])][0] += dict_stacks[str(n[1])][0][-n[0]:]
-        # Remove from the stack that got containers removed.
-        dict_stacks[str(n[1])][0] = dict_stacks[str(n[1])][0][slice(
-            0,
-            len(dict_stacks[str(n[1])][0])-n[0])]
-    res = [dict_stacks[key][0][-1] for key in dict_stacks.keys()]
-    for letter in res:
-        c += letter
-    print(f'Part 2 value: {c}')
+# Remove the last list, since it's the indexes of the stacks.
+stacks.pop()
 
+# Remove empty containers, invert the columns and return as list of lists again.
+stacks = ([list(''.join(col).strip()[::-1]) for col in zip(*stacks)])
 
-if __name__ == '__main__':
-    # part1()
-    part2()
+# for line in data:
+#     a,b,c = map(int,(re.findall(find_numbers, line)))
+#     stacks[c-1].extend(stacks[b-1][-a:][::-1])
+#     stacks[b-1] = stacks[b-1][:-a]
+# print('Part 1 result:',''.join([r[-1] for r in stacks]))
+
+for line in data:
+    a,b,c = map(int,(re.findall(find_numbers, line)))
+    stacks[c-1].extend(stacks[b-1][-a:])
+    stacks[b-1] = stacks[b-1][:-a]
+print('Part 2 result:',''.join([r[-1] for r in stacks]))
+
