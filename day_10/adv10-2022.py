@@ -40,5 +40,9 @@ for i in range(dict_length):
         crt += '.'
 
 print('Part 2 value:')
-for i in range(int(len(crt)/40)):
-    print(crt[40*i:40*(i+1)])
+# Iterate over the crt string in steps of 40
+for i in range(0, len(crt), 40):
+    # Concatenate the substring of crt starting at index i and
+    # ending at index i+40 with a newline character and print the result
+    print(''.join(crt[i:i+40]))
+
