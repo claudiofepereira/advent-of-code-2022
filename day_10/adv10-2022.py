@@ -6,15 +6,16 @@ tot = 1
 
 for line in input:
     move = line.split(' ')
+    # Add 2 to cycles if move is 'addx', otherwise add 1
     cycles += 2 if move[0] == 'addx' else 1
+    # Increment tot by the second value in the move list, if present
     tot += int(move[1]) if len(move) == 2 else 0
-    # print(cycles, int(move[1]) if len(move) == 2 else 0, tot)
-    d[str(cycles)] = [move[0], tot]
+    d[cycles] = [move[0], tot]
 
 r = 0
 for i in range(20, cycles, 40):
     for x in range(1,3):
-        key = str(i-x)
+        key = i-x
         if key in d:
             r +=  i * d[key][1]
             break
@@ -22,10 +23,10 @@ print(f'Part 1 value: {r}')
 
 crt = ''
 crt_cycle = 0
-dict_length = int(list(d)[-1])
+dict_length = list(d)[-1]
 for i in range(dict_length):
     # Update the sprite position if there's a change in the X register.
-    key = str(i)
+    key = i
     if i % 40 == 0:
         crt_cycle = i
         sprite_pos = [0, 1, 2]
